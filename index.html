@@ -436,16 +436,536 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
 <h1>eazyPortal</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#_eazyportal_structure"><em>eazyPortal</em> Structure</a></li>
+</ul>
+</li>
+<li><a href="#_contribution_to_the_eazyportal">Contribution to the <em>eazyPortal</em></a>
+<ul class="sectlevel2">
+<li><a href="#_repository_structure">Repository Structure</a></li>
+<li><a href="#_how_to_contribute">How to Contribute</a></li>
+<li><a href="#_how_to_create_a_release">How to Create a Release</a></li>
+</ul>
+</li>
+<li><a href="#_build_and_run_eazyportal">Build and Run <em>eazyPortal</em></a>
+<ul class="sectlevel2">
+<li><a href="#precondition">Precondition</a></li>
+<li><a href="#_run_eazyportal_from_intellij_idea">Run <em>eazyPortal</em> from Intellij IDEA</a></li>
+<li><a href="#_run_eazyportal_from_command_line">Run <em>eazyPortal</em> from command line</a></li>
+<li><a href="#_run_eazyportal_as_docker_images">Run <em>eazyPortal</em> as Docker images</a></li>
+</ul>
+</li>
+<li><a href="#_create_a_custom_module">Create a custom Module</a>
+<ul class="sectlevel2">
+<li><a href="#_create_the_module_with_jenkins_build">Create the Module with Jenkins build</a></li>
+<li><a href="#_create_the_module_manually">Create the Module manually</a></li>
+<li><a href="#_create_rest_controller">Create REST controller</a></li>
+<li><a href="#_create_custom_requestcontext">Create custom <code>RequestContext</code></a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>eazyPortal</em> is an implementation of a Modular Portal Framework.
+The main goal of this type of framework is to be modular in every possible way.
+This modularity is present in back-end and front-end as well.</p>
+</div>
+<div class="paragraph">
+<p>Built on top of this modularity, a specific skeleton had been designed. It is called <strong>Behemoth</strong>.
+It can include any or all of these modules while it runs on a single application service. This inclusion is based on build-time configuration.</p>
+</div>
+<div class="sect2">
+<h3 id="_eazyportal_structure"><em>eazyPortal</em> Structure</h3>
+<div class="paragraph">
+<p>Every microservice (aka module) contains its UI, and they delivered as a Docker containers.</p>
+</div>
+<div class="paragraph">
+<p>Every module is required to implement the <a href="https://github.com/eazyportal/core">Core module</a> for back-end and <a href="https://github.com/eazyportal/core-ui">Core-UI module</a> for front-end.
+These Core modules contain common code, and encapsulate some required dependencies.
+All dependencies are required to be the latest ones. This applies for the Core and 3rd-party dependencies either.</p>
+</div>
+<div class="paragraph">
+<p>The back-end is Java based and built on Spring and Spring Boot, while the front-end is built on React and React Library.</p>
+</div>
+<div class="paragraph">
+<p>There is an <a href="https://github.com/eazyportal/eazyGradlePlugin">eazyGradlePlugin</a> Gradle plugin that is responsible to force all modules to look and built in the same way.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_contribution_to_the_eazyportal">Contribution to the <em>eazyPortal</em></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_repository_structure">Repository Structure</h3>
+<div class="paragraph">
+<p>All <em>eazyPortal</em> repositories follow the <a href="https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow">Gitflow workflow</a>.
+The <code>master</code> branch is used for releases only.
+Everything which goes to the <code>master</code> branch that will automatically release a new version.
+Each feature should go to the <code>feature</code> branch.</p>
+</div>
+<div class="paragraph">
+<p>Those services which have UI component, the repository contains a submodule.
+These submodules follow the same Gitflow workflow principal.
+The purpose of this structure is to be able to decouple the front-end code and development from the back-end code and development.
+However, they have to be released together.</p>
+</div>
+<div class="paragraph">
+<p>For further details about the required/predefined project structure, submodules, and their dependency tree check the <a href="https://github.com/eazyportal/eazyGradlePlugin">eazyGradlePlugin</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_contribute">How to Contribute</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Fork the repository where you want to contribute</p>
+</li>
+<li>
+<p>Clone your fork</p>
+</li>
+<li>
+<p>Name your fork as <code>origin</code> and add the forked one as <code>upstream</code></p>
+</li>
+<li>
+<p>Implement the feature</p>
+</li>
+<li>
+<p>Send PR from your fork into the <code>feature</code> branch of the <code>upstream</code> repository</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_create_a_release">How to Create a Release</h3>
+<div class="paragraph">
+<p>Merge everything into the <code>feature</code> branch.
+If there are UI changes what you want to release, merge the UI submodule into the <code>feature</code> branch as well.
+Use PRs for this purpose.</p>
+</div>
+<div class="paragraph">
+<p>After everything is in order, use the Jenkins job (TBD) to release it.
+All artifacts will be published to Github packages (under development).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_build_and_run_eazyportal">Build and Run <em>eazyPortal</em></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unfortunately none of the artifacts published to maven artifactory, so it is required to build everything locally.
+(There is an initiative to host an artifactory in the future.)</p>
+</div>
+<div class="paragraph">
+<p>There are multiple ways to run <em>eazyPortal</em>.
+For demonstration purposes, only some core modules will be listed here.
+However, all modules should work in the same way.</p>
+</div>
+<div class="paragraph">
+<p>Fork all repositories, and use your fork to clone them.
+Add each of your fork as <code>origin</code> and these as <code>upstream</code>.
+To read more about the repository structure and how to contribute please read the <a href="contribution.adoc">contribution</a> documentation.</p>
+</div>
+<div class="sect2">
+<h3 id="precondition">Precondition</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Properly configured Github account with ssh access to it.
+gradle.properties</p>
+</li>
+<li>
+<p>Fork and clone the <a href="https://github.com/eazyportal/layout">Layout module</a>,
+the <a href="https://github.com/eazyportal/user-permission-site">UPS module</a>,
+and the <a href="https://github.com/eazyportal/auth">Auth module</a>.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">git clone --recurse-submodules git@github.com:&lt;username&gt;/eazyportal-layout.git layout
+git clone --recurse-submodules git@github.com:&lt;username&gt;/eazyportal-user-permission-site.git ups
+git clone --recurse-submodules git@github.com:&lt;username&gt;/eazyportal-auth.git auth</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>(Optional) To get the latest development version checkout to the <code>feature</code> branch for each module.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">git checkout --recurse-submodules feature</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>(Optional) If you want to test the latest UI features, it is required to checkout to the <code>feature</code> branch manually for the UI submodule.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cd ui
+git checkout feature
+cd ..</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Get the config from <a href="https://github.com/eazyportal/deploy-config">deploy config</a> repository.</p>
+</li>
+<li>
+<p>Install the Nginx locally, or use it from Docker container.
+For both cases use the configuration from the 'local' folder of the 'deploy config' repository.</p>
+<details>
+<summary class="title">Start the Nginx as Docker container</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">dokcer-compose -f nginx.yaml up</code></pre>
+</div>
+</div>
+</div>
+</details>
+</li>
+<li>
+<p>Install the Redis locally or use it from Docker container.</p>
+<details>
+<summary class="title">Start the Redis as Docker container</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">dokcer-compose -f redis.yaml up</code></pre>
+</div>
+</div>
+</div>
+</details>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_run_eazyportal_from_intellij_idea">Run <em>eazyPortal</em> from Intellij IDEA</h3>
+<div class="paragraph">
+<p>After all of the <a href="#precondition">preconditions</a> are met:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Open each module separately with Intellij IDEA.</p>
+</li>
+<li>
+<p>Use the preconfigured <code>Run/Debug Configuration</code> with <code> - Nginx</code> ending to start each application.</p>
+</li>
+<li>
+<p>Open <a href="http://localhost" class="bare">http://localhost</a> and happy hacking.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_run_eazyportal_from_command_line">Run <em>eazyPortal</em> from command line</h3>
+<div class="paragraph">
+<p>After all of the <a href="#precondition">preconditions</a> are met:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Start each module with</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">./gradlew bootRun --args='--spring.profiles.active=nginx'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open <a href="http://localhost" class="bare">http://localhost</a> and happy hacking.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_run_eazyportal_as_docker_images">Run <em>eazyPortal</em> as Docker images</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>TBD</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_a_custom_module">Create a custom Module</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter will guide you through how to create a custom <em>eazyPortal</em> Module.</p>
+</div>
+<div class="paragraph">
+<p>All official <em>eazyPortal</em> modules are use Kotlin DSL build script, so this tutorial will use that as well.
+Of course, if you wish to use Groovy you can do that.</p>
+</div>
+<div class="sect2">
+<h3 id="_create_the_module_with_jenkins_build">Create the Module with Jenkins build</h3>
+<div class="paragraph">
+<p>There will be a Jenkins job for this. <a href="https://eazyportal.myjetbrains.com/youtrack/issue/TOOLS-8">TOOLS-8</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_the_module_manually">Create the Module manually</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Create an empty Gradle project (Project name: example)</p>
+</li>
+<li>
+<p>Update the Gradle to the latest version</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">./gradlew wrapper --gradle-version=&lt;gradle_version&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Apply the <em>eazyGradlePlugin</em> to the root project</p>
+<div class="listingblock">
+<div class="title">build.gradle.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">buildscript {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = "github"
+            url = uri("https://maven.pkg.github.com/eazyportal/eazyGradlePlugin")
+            credentials(PasswordCredentials::class)
+        }
+    }
+    dependencies {
+        classpath("org.eazyportal.gradle:eazy-gradle-plugin:+")
+    }
+}
 
+apply(plugin = "org.eazyportal.gradle.eazy-portal")</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>You can omit the <code>plugins</code>, <code>group</code>, <code>repository</code>, and <code>dependencies</code> statements, because all of them are provided by the plugin.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The <code>group</code> will be set to "org.eazyportal.&lt;rootProject.name &gt;".
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Add the following sub-module: <code>api</code>, <code>service</code>, and <code>web</code></p>
+<div class="listingblock">
+<div class="title">settings.groovy.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">include("example-api")
+project(":example-api").projectDir = file("api")
+
+include("example-service")
+project(":example-service").projectDir = file("service")
+
+include("example-web")
+project(":example-web").projectDir = file("web")</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Currently, these sub-modules are required, but it is planned to change this behaviour. (<a href="https://eazyportal.myjetbrains.com/youtrack/issue/TOOLS-9">TOOLS-9</a>)
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Create a <em>SpringBoot</em> main class in the root project (src/main/java/)</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.ExampleApplication.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication(
+    scanBasePackages = {"org.eazyportal.core", "org.eazyportal.example"}
+)
+public class ExampleApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ExampleApplication.class, args);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+It is required to add the Core module package to the <code>scanBasePackages</code> to enable <em>eazyPortal</em> preconfigurations.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_rest_controller">Create REST controller</h3>
+<div class="paragraph">
+<p>All official <em>eazyPortal</em> modules use the <code>org.eazyportal.&lt;service-name&gt;.&lt;module&gt;.more.packages</code> package structure, so this tutorial will use that as well.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create the folder structure for the <code>api</code> module (api/src/main/java)</p>
+</li>
+<li>
+<p>Create the response which extends the <code>EazyResponse</code></p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.api.response.model.ExampleResponse.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create the folder structure for the <code>web</code> module (web/src/main/java)</p>
+</li>
+<li>
+<p>Create the REST controller which extends the <code>EazyRestController&lt;BasicRequestContext&gt;</code></p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.web.rest.contoller.ExampleContoller.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"></code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<code>BasicRequestContext</code> is a <em>ModelAttribute</em> that is created by the <code>EazyRestController</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Use the <code>/api/</code> prefix for each REST endpoint.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Create the <code>ExampleWebSecurityConfigurer</code> which extends the <code>EazyWebSecurityConfigurer</code>.
+This is required to allow access to the new endpoint.</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.web.security.config.ExampleWebSecurityConfigurer.java</div>
+<div class="content">
+<pre></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The <code>EazyWebSecurityConfigurer</code> will be replaced with an interface in the future. (CORE-X)
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_custom_requestcontext">Create custom <code>RequestContext</code></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Create the <code>ExampleRequestContext</code> which extends the <code>EazyRequestContext</code></p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.api.request.model.ExampleRequestContext.java</div>
+<div class="content">
+<pre></pre>
+</div>
+</div>
+</li>
+<li>
+<p>To be able to use this RequestContext, it is required to implement a mapper for it.
+Create the <code>ExampleContextMapper</code>.</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.web.rest.mapper.ExampleContextMapper.java</div>
+<div class="content">
+<pre></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Now it can be used in the REST controllers.
+Create a new REST controller.</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.web.rest.contoller.ExampleContextRestContoller.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"></code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Do not forget to add the new endpoint to the <code>ExampleWebSecurityConfigurer</code>, otherwise it won&#8217;t be available.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-11 18:12:43 +0100
+Last updated 2021-03-11 18:14:51 +0100
 </div>
 </div>
 </body>
