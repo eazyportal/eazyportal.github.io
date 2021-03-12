@@ -465,10 +465,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_create_a_custom_module">Create a custom Module</a>
 <ul class="sectlevel2">
 <li><a href="#_create_the_module_with_jenkins_build">Create the Module with Jenkins build</a></li>
-<li><a href="#_create_the_module_manually">Create the Module manually</a></li>
+<li><a href="#_create_the_module_manually">Create the Module manually</a>
+<ul class="sectlevel3">
+<li><a href="#_initialize_a_custom_module">Initialize a custom Module</a></li>
 <li><a href="#_create_rest_controller">Create REST controller</a></li>
-<li><a href="#_create_custom_requestcontext">Create custom <code>RequestContext</code></a></li>
+<li><a href="#_create_custom_requestcontext">Create custom RequestContext</a></li>
 <li><a href="#_create_the_ui_library_and_application">Create the UI Library and Application</a></li>
+<li><a href="#_customizing_the_ui_content">Customizing the UI content</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -721,6 +726,8 @@ Of course, if you wish to use Groovy you can do that.</p>
 </div>
 <div class="sect2">
 <h3 id="_create_the_module_manually">Create the Module manually</h3>
+<div class="sect3">
+<h4 id="_initialize_a_custom_module">Initialize a custom Module</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -833,8 +840,8 @@ It is required to add the Core module package to the <code>scanBasePackages</cod
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_create_rest_controller">Create REST controller</h3>
+<div class="sect3">
+<h4 id="_create_rest_controller">Create REST controller</h4>
 <div class="paragraph">
 <p>All official <em>eazyPortal</em> modules use the <code>org.eazyportal.&lt;service-name&gt;.&lt;module&gt;.more.packages</code> package structure, so this tutorial will use that as well.</p>
 </div>
@@ -913,8 +920,8 @@ The <code>EazyWebSecurityConfigurer</code> will be replaced with an interface in
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_create_custom_requestcontext">Create custom <code>RequestContext</code></h3>
+<div class="sect3">
+<h4 id="_create_custom_requestcontext">Create custom RequestContext</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -961,8 +968,8 @@ Do not forget to add the new endpoint to the <code>ExampleWebSecurityConfigurer<
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_create_the_ui_library_and_application">Create the UI Library and Application</h3>
+<div class="sect3">
+<h4 id="_create_the_ui_library_and_application">Create the UI Library and Application</h4>
 <div class="paragraph">
 <p>All official <em>eazyPortal</em> modules depend on React Application and React Library, so this tutorial will use them as well.
 To create React Library this tutorial uses the <a href="https://www.npmjs.com/package/create-react-library">create-react-library</a> npm package.</p>
@@ -1097,8 +1104,9 @@ $ npm run start</code></pre>
 </div>
 </div>
 </details>
+</div>
 <div class="sect3">
-<h4 id="_customizing_the_content">Customizing the content</h4>
+<h4 id="_customizing_the_ui_content">Customizing the UI content</h4>
 <div class="paragraph">
 <p>Most of the official <em>eazyPortal</em> UI modules provides the ability to reuse the library in the <em>Behemoth</em> project.
 To achieve this, it required to change the generated code.
@@ -1383,7 +1391,7 @@ You have to proxy the REST requests to the Spring Boot application, OR enable <c
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-12 21:53:29 +0100
+Last updated 2021-03-12 23:06:58 +0100
 </div>
 </div>
 </body>
