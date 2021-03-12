@@ -468,6 +468,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_create_the_module_manually">Create the Module manually</a></li>
 <li><a href="#_create_rest_controller">Create REST controller</a></li>
 <li><a href="#_create_custom_requestcontext">Create custom <code>RequestContext</code></a></li>
+<li><a href="#_create_the_ui_library_and_application">Create the UI Library and Application</a></li>
 </ul>
 </li>
 </ul>
@@ -960,12 +961,429 @@ Do not forget to add the new endpoint to the <code>ExampleWebSecurityConfigurer<
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_create_the_ui_library_and_application">Create the UI Library and Application</h3>
+<div class="paragraph">
+<p>All official <em>eazyPortal</em> modules depend on React Application and React Library, so this tutorial will use them as well.
+To create React Library this tutorial uses the <a href="https://www.npmjs.com/package/create-react-library">create-react-library</a> npm package.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add a new <code>ui</code> submodule</p>
+<div class="listingblock">
+<div class="title">settings.gradle.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">include("example-ui")
+project(":example-ui").projectDir = file("ui")</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Initializing a new React library, and provide the necessary information as the script requests them</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ npx create-react-library
+
+? Package Name @eazyportal/example-ui
+? Package Description eazyPortal - Example-UI Library
+? Author's GitHub Handle Yg0R2
+? GitHub Repo Path https://github.com/eazyportal/example-ui
+? License https://github.com/eazyportal/core/blob/master/LICENSE
+? Package Manager npm
+? Template default</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The current implementation does not use TypeScript, but it is planned to introduce it.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>The <code>create-react-library</code> script creates the 'example-ui' folder.
+To follow the naming convention and to align with the configuration as set in the first step, rename the folder to <code>ui</code>.</p>
+</li>
+<li>
+<p>Add the <code>@eazyportal/core-ui</code> as a dependency to the library</p>
+<div class="listingblock">
+<div class="title">ui/package.json</div>
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">  "dependencies": {
+    "@eazyportal/core-ui": "^&lt;latest-version&gt;"
+  }</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Delete <code>react*</code> dependencies from the <code>devDependencies</code> section.
+<code>core-ui</code> already provides these dependencies and <a href="https://github.com/eazyportal/core-ui/blob/master/package.json#L29-L37">many more</a>.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Create the <code>.npmrc</code> file and add a new package repository for the <code>@eazyportal</code> dependencies.</p>
+<div class="listingblock">
+<div class="title">ui/.npmrc</div>
+<div class="content">
+<pre class="highlight"><code>registry=https://registry.npmjs.org/
+@eazyportal:registry=https://npm.pkg.github.com/</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The library and the application configured.
+Before you can start using them, you have to update the dependencies (<code>create-react-library</code> has some outdated ones).
+After that, it is required to install these dependencies.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ ncu -u
+$ npm install
+$ cd example/
+$ npm install
+$ cd ..</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Now everything is ready to use</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ npm run start &amp;
+$ cd example/
+$ npm run start</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open <a href="http://localhost:3000" class="bare">http://localhost:3000</a> if it did not open automatically</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>At this point, it is possible to build and run the whole application (back-end and front-end) together.</p>
+</div>
+<details>
+<summary class="title">Run the wole application</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootRun</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">Build the whole application into a Docker image</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootBuildImage</code></pre>
+</div>
+</div>
+</div>
+</details>
+<div class="sect3">
+<h4 id="_customizing_the_content">Customizing the content</h4>
+<div class="paragraph">
+<p>Most of the official <em>eazyPortal</em> UI modules provides the ability to reuse the library in the <em>Behemoth</em> project.
+To achieve this, it required to change the generated code.
+The application should be as lightweight as possible, and should contain only the bare minimum.
+Therefore, the library should contain everything.</p>
+</div>
+<h5 id="_refactor_the_generated_code" class="discrete">Refactor the generated code</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>App*.js</code> and <code>index.css</code> from the application (example/src/) to the library (src/).</p>
+</li>
+<li>
+<p>Replace the content of the <code>index.js</code> of the application with this:</p>
+<div class="listingblock">
+<div class="title">example/src/ExampleComponent.js</div>
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">import Example from '@eazyportal/example-ui'
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import '@eazyportal/example-ui/dist/index.css'
+
+ReactDOM.render(&lt;Example.App /&gt;, document.getElementById('root'))</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Move and rename the <code>index*.js</code> of the library to <code>src/components/ExampleComponent*.js</code>.
+Move and rename the <code>styles.module.css</code> to <code>src/components/ExampleComponent.module.css</code>.
+It is required to change the <code>styles.module.css</code> in the <code>ExampleComponent.js</code> too to point to the correct css file.</p>
+</li>
+<li>
+<p>Update the import of <code>ExampleComponent</code> and <code>index.css</code> in the <code>App.js</code> to point to the renamed files.</p>
+<div class="listingblock">
+<div class="title">src/App.js</div>
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">import { ExampleComponent } from './components/ExampleComponent'
+import './components/ExampleComponent'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a new <code>index.js</code> in the library</p>
+<div class="listingblock">
+<div class="title">src/index.js</div>
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">import React from 'react'
+
+import App from './App'
+
+import './index.css'
+
+const Auth = {
+  App
+}
+
+export default Auth</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Now everything is ready to use</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ npm run start &amp;
+$ cd example/
+$ npm run start</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open <a href="http://localhost:3000" class="bare">http://localhost:3000</a> if it did not open automatically</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>At this point, it is possible to build and run the whole application (back-end and front-end) together.</p>
+</div>
+<details>
+<summary class="title">Run the wole application</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootRun</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">Build the whole application into a Docker image</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootBuildImage</code></pre>
+</div>
+</div>
+</div>
+</details>
+<h5 id="_display_response_from_rest_endpoint" class="discrete">Display response from REST endpoint</h5>
+<div class="paragraph">
+<p>After refactoring the generated code, it is ready to be customized.
+During the previous chapter 2 REST endpoint was implemented, so let&#8217;s use them.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a new component <code>ExampleListComponent</code></p>
+<details>
+<summary class="title">src/components/ExampleListComponent.js</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">import Core from '@eazyportal/core-ui'
+
+import React from 'react'
+
+import { ExampleComponent } from './ExampleComponent'
+
+class ExampleListComponent extends React.Component {
+
+  state = {
+    examples: null
+  }
+
+  componentDidMount() {
+    Core.axiosService.get(`/api/examples`)
+      .then(response =&gt; this.setState({examples: response.data}))
+      .catch(error =&gt; console.log(error))
+  }
+
+  render() {
+    let renderedExamples = null
+    if (this.state.examples) {
+      renderedExamples = Object.entries(this.state.examples)
+        .map(([index, example]) =&gt; {
+          return &lt;ExampleComponent
+            key={index}
+            text={`Hello, my name is ${example.name} and I am ${example.age} years old.`}
+          /&gt;
+        })
+    }
+
+    return (
+      &lt;React.Fragment&gt;
+        {renderedExamples}
+      &lt;/React.Fragment&gt;
+    )
+  }
+
+}
+
+export default ExampleListComponent</code></pre>
+</div>
+</div>
+</div>
+</details>
+</li>
+<li>
+<p>Update the <code>App</code> component to use the new component</p>
+<details>
+<summary class="title">src/App.js</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">import React from 'react'
+
+import { ExampleComponent } from './components/ExampleComponent'
+import ExampleListComponent from './components/ExampleListComponent'
+
+import source from './App.module.css'
+
+class App extends React.Component {
+
+  state = {
+    loadData: false
+  }
+
+  buttonClickHandler = () =&gt; {
+    this.setState({loadData: !this.state.loadData})
+  }
+
+  render() {
+    let renderedComponent
+    if (this.state.loadData) {
+      renderedComponent = &lt;ExampleListComponent /&gt;
+    }
+    else {
+      renderedComponent = &lt;ExampleComponent text="Create React Library Example 😄" /&gt;
+    }
+
+    return (
+      &lt;div&gt;
+        &lt;div className={source.sourceSwitchWrapper}&gt;
+          &lt;button className={source.sourceSwitchButton} onClick={this.buttonClickHandler}&gt;Switch between data sources&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+          {renderedComponent}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default App</code></pre>
+</div>
+</div>
+</div>
+</details>
+</li>
+<li>
+<p>Add some styling to the <code>App</code> component</p>
+<details>
+<summary class="title">src/App.module.css</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-css" data-lang="css">.sourceSwitchButton {
+  transform: translateX(-50%);
+}
+
+.sourceSwitchWrapper {
+  left: 50%;
+  margin-top: 2em;
+  position: relative;
+}</code></pre>
+</div>
+</div>
+</div>
+</details>
+</li>
+<li>
+<p>Rebuild the UI library, the UI application, and start the Spring Boot application.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew cleanUi bootRun</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<h5 id="_continuous_ui_development" class="discrete">Continuous UI development</h5>
+<div class="paragraph">
+<p>For continuous development this approach is not the best, because it requires you to constantly stop, rebuild, and restart all applications.
+To avoid this, fortunately there is an option.
+You have to start everything separately.</p>
+</div>
+<div class="paragraph">
+<p>Unfortunately this solution requires a proxy (e.g. Nginx), or some hardcoded values.
+You have to proxy the REST requests to the Spring Boot application, OR enable <code>@CrossOrigin</code> on the endpoint and provide the full URL for <code>axios</code>.
+(At least in the current version.)</p>
+</div>
+<div class="paragraph">
+<p>Start the Spring Boot application from the projects main folder.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ ./gradlew bootRun -x deployUi</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Start "watching" for library changes from the <code>ui</code> module folder.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ npm run start</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Start the UI application from the <code>example</code> folder of the <code>ui</code> module.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ npm run start</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-11 18:14:51 +0100
+Last updated 2021-03-12 21:53:29 +0100
 </div>
 </div>
 </body>
