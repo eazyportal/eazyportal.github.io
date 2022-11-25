@@ -447,33 +447,41 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_eazyportal_structure"><em>eazyPortal</em> Structure</a></li>
 </ul>
 </li>
-<li><a href="#_contribution_to_the_eazyportal">Contribution to the <em>eazyPortal</em></a>
+<li><a href="#_getting_started_with_eazyportal">Getting Started With EazyPortal</a>
 <ul class="sectlevel2">
-<li><a href="#_repository_structure">Repository Structure</a></li>
-<li><a href="#_how_to_contribute">How to Contribute</a></li>
-<li><a href="#_how_to_create_a_release">How to Create a Release</a></li>
-</ul>
-</li>
 <li><a href="#_build_and_run_eazyportal">Build and Run <em>eazyPortal</em></a>
-<ul class="sectlevel2">
+<ul class="sectlevel3">
 <li><a href="#precondition">Precondition</a></li>
 <li><a href="#_run_eazyportal_from_intellij_idea">Run <em>eazyPortal</em> from Intellij IDEA</a></li>
 <li><a href="#_run_eazyportal_from_command_line">Run <em>eazyPortal</em> from command line</a></li>
 <li><a href="#_run_eazyportal_as_docker_images">Run <em>eazyPortal</em> as Docker images</a></li>
 </ul>
 </li>
-<li><a href="#_create_a_custom_module">Create a custom Module</a>
-<ul class="sectlevel2">
-<li><a href="#_create_the_module_with_jenkins_build">Create the Module with Jenkins build</a></li>
-<li><a href="#_create_the_module_manually">Create the Module manually</a>
+<li><a href="#_create_a_custom_service">Create a Custom Service</a>
 <ul class="sectlevel3">
-<li><a href="#_initialize_a_custom_module">Initialize a custom Module</a></li>
-<li><a href="#_create_rest_controller">Create REST controller</a></li>
-<li><a href="#_create_custom_requestcontext">Create custom RequestContext</a></li>
+<li><a href="#_create_the_module_with_jenkins_build">Create the Module with Jenkins build</a></li>
+<li><a href="#_create_the_service_manually">Create the Service Manually</a>
+<ul class="sectlevel4">
+<li><a href="#_initialize_the_project">Initialize the Project</a></li>
+<li><a href="#_implement_the_main_aka_application_module">Implement the main aka <code>application</code> module</a></li>
+<li><a href="#_implement_the_api_module">Implement the <code>api</code> module</a></li>
+<li><a href="#_implement_the_dao_module">Implement the <code>dao</code> module</a></li>
+<li><a href="#_implement_the_service_module">Implement the <code>service</code> module</a></li>
+<li><a href="#_implement_the_web_module">Implement the <code>web</code> module</a></li>
 <li><a href="#_create_the_ui_library_and_application">Create the UI Library and Application</a></li>
-<li><a href="#_customizing_the_ui_content">Customizing the UI content</a></li>
+<li><a href="#_implementing_the_ui_module">Implementing the UI module</a></li>
+<li><a href="#_test_the_service">Test the service</a></li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_contribution_to_the_eazyportal">Contribution to the <em>eazyPortal</em></a>
+<ul class="sectlevel2">
+<li><a href="#_repository_structure">Repository Structure</a></li>
+<li><a href="#_how_to_contribute">How to Contribute</a></li>
+<li><a href="#_how_to_create_a_release">How to Create a Release</a></li>
 </ul>
 </li>
 </ul>
@@ -512,65 +520,10 @@ All dependencies are required to be the latest ones. This applies for the Core a
 </div>
 </div>
 <div class="sect1">
-<h2 id="_contribution_to_the_eazyportal">Contribution to the <em>eazyPortal</em></h2>
+<h2 id="_getting_started_with_eazyportal">Getting Started With EazyPortal</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_repository_structure">Repository Structure</h3>
-<div class="paragraph">
-<p>All <em>eazyPortal</em> repositories follow the <a href="https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow">Gitflow workflow</a>.
-The <code>master</code> branch is used for releases only.
-Everything which goes to the <code>master</code> branch that will automatically release a new version.
-Each feature should go to the <code>feature</code> branch.</p>
-</div>
-<div class="paragraph">
-<p>Those services which have UI component, the repository contains a submodule.
-These submodules follow the same Gitflow workflow principal.
-The purpose of this structure is to be able to decouple the front-end code and development from the back-end code and development.
-However, they have to be released together.</p>
-</div>
-<div class="paragraph">
-<p>For further details about the required/predefined project structure, submodules, and their dependency tree check the <a href="https://github.com/eazyportal/eazyGradlePlugin">eazyGradlePlugin</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_how_to_contribute">How to Contribute</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Fork the repository where you want to contribute</p>
-</li>
-<li>
-<p>Clone your fork</p>
-</li>
-<li>
-<p>Name your fork as <code>origin</code> and add the forked one as <code>upstream</code></p>
-</li>
-<li>
-<p>Implement the feature</p>
-</li>
-<li>
-<p>Send PR from your fork into the <code>feature</code> branch of the <code>upstream</code> repository</p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_how_to_create_a_release">How to Create a Release</h3>
-<div class="paragraph">
-<p>Merge everything into the <code>feature</code> branch.
-If there are UI changes what you want to release, merge the UI submodule into the <code>feature</code> branch as well.
-Use PRs for this purpose.</p>
-</div>
-<div class="paragraph">
-<p>After everything is in order, use the Jenkins job (TBD) to release it.
-All artifacts will be published to Github packages (under development).</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_build_and_run_eazyportal">Build and Run <em>eazyPortal</em></h2>
-<div class="sectionbody">
+<h3 id="_build_and_run_eazyportal">Build and Run <em>eazyPortal</em></h3>
 <div class="paragraph">
 <p>Unfortunately none of the artifacts published to maven artifactory, so it is required to build everything locally.
 (There is an initiative to host an artifactory in the future.)</p>
@@ -583,10 +536,10 @@ However, all modules should work in the same way.</p>
 <div class="paragraph">
 <p>Fork all repositories, and use your fork to clone them.
 Add each of your fork as <code>origin</code> and these as <code>upstream</code>.
-To read more about the repository structure and how to contribute please read the <a href="contribution.adoc">contribution</a> documentation.</p>
+To read more about the repository structure and how to contribute please read the <a href="/contribution.adoc">contribution</a> documentation.</p>
 </div>
-<div class="sect2">
-<h3 id="precondition">Precondition</h3>
+<div class="sect3">
+<h4 id="precondition">Precondition</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -656,8 +609,8 @@ For both cases use the configuration from the 'local' folder of the 'deploy conf
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_run_eazyportal_from_intellij_idea">Run <em>eazyPortal</em> from Intellij IDEA</h3>
+<div class="sect3">
+<h4 id="_run_eazyportal_from_intellij_idea">Run <em>eazyPortal</em> from Intellij IDEA</h4>
 <div class="paragraph">
 <p>After all of the <a href="#precondition">preconditions</a> are met:</p>
 </div>
@@ -675,8 +628,8 @@ For both cases use the configuration from the 'local' folder of the 'deploy conf
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_run_eazyportal_from_command_line">Run <em>eazyPortal</em> from command line</h3>
+<div class="sect3">
+<h4 id="_run_eazyportal_from_command_line">Run <em>eazyPortal</em> from command line</h4>
 <div class="paragraph">
 <p>After all of the <a href="#precondition">preconditions</a> are met:</p>
 </div>
@@ -696,8 +649,8 @@ For both cases use the configuration from the 'local' folder of the 'deploy conf
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_run_eazyportal_as_docker_images">Run <em>eazyPortal</em> as Docker images</h3>
+<div class="sect3">
+<h4 id="_run_eazyportal_as_docker_images">Run <em>eazyPortal</em> as Docker images</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -707,10 +660,8 @@ For both cases use the configuration from the 'local' folder of the 'deploy conf
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_create_a_custom_module">Create a custom Module</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_create_a_custom_service">Create a Custom Service</h3>
 <div class="paragraph">
 <p>This chapter will guide you through how to create a custom <em>eazyPortal</em> Module.</p>
 </div>
@@ -718,23 +669,30 @@ For both cases use the configuration from the 'local' folder of the 'deploy conf
 <p>All official <em>eazyPortal</em> modules are use Kotlin DSL build script, so this tutorial will use that as well.
 Of course, if you wish to use Groovy you can do that.</p>
 </div>
-<div class="sect2">
-<h3 id="_create_the_module_with_jenkins_build">Create the Module with Jenkins build</h3>
+<div class="sect3">
+<h4 id="_create_the_module_with_jenkins_build">Create the Module with Jenkins build</h4>
 <div class="paragraph">
 <p>There will be a Jenkins job for this. <a href="https://eazyportal.myjetbrains.com/youtrack/issue/TOOLS-8">TOOLS-8</a></p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_create_the_module_manually">Create the Module manually</h3>
 <div class="sect3">
-<h4 id="_initialize_a_custom_module">Initialize a custom Module</h4>
+<h4 id="_create_the_service_manually">Create the Service Manually</h4>
+<div class="paragraph">
+<p>All official <em>eazyPortal</em> service use the <code>org.eazyportal.&lt;service-name&gt;.&lt;module&gt;.more.packages</code> package structure, so this tutorial will use that as well.</p>
+</div>
+<div class="paragraph">
+<p>This example describes the necessary steps to implement a complete <em>eazyPortal</em> service.
+Can create and retrieve data via REST endpoints, and persists it into a DB.</p>
+</div>
+<div class="sect4">
+<h5 id="_initialize_the_project">Initialize the Project</h5>
 <div class="ulist">
 <ul>
 <li>
-<p>Create an empty Gradle project (Project name: example)</p>
+<p>Create an empty Gradle project with the name of <code>example</code></p>
 </li>
 <li>
-<p>Update the Gradle to the latest version</p>
+<p>Update the Gradle Wrapper to the <a href="https://gradle.org/releases/">latest version</a></p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">./gradlew wrapper --gradle-version=&lt;gradle_version&gt;</code></pre>
@@ -742,25 +700,50 @@ Of course, if you wish to use Groovy you can do that.</p>
 </div>
 </li>
 <li>
-<p>Apply the <em>eazyGradlePlugin</em> to the root project</p>
+<p>Configure the project to use GitHub for plugin artifactory</p>
+<div class="listingblock">
+<div class="title">settings.gradle.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">pluginManagement {
+    repositories {
+        maven {
+            name = "github"
+            url = uri("${extra["githubUrl"] as String}/*")
+
+            credentials {
+                password = extra["githubPassword"] as String
+                username = extra["githubUsername"] as String
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Apply the <em>org.eazyportal.plugin.portal</em> to the root project</p>
+<div class="listingblock">
+<div class="title">settings.gradle.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">pluginManagement {
+    plugins {
+        id("org.eazyportal.plugin.portal") version(extra["eazyPortalPluginVersion"] as String)
+    }
+}</code></pre>
+</div>
+</div>
 <div class="listingblock">
 <div class="title">build.gradle.kts</div>
 <div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">buildscript {
-    repositories {
-        gradlePluginPortal()
-        maven {
-            name = "github"
-            url = uri("https://maven.pkg.github.com/eazyportal/eazyGradlePlugin")
-            credentials(PasswordCredentials::class)
-        }
-    }
-    dependencies {
-        classpath("org.eazyportal.gradle:eazy-gradle-plugin:+")
-    }
-}
-
-apply(plugin = "org.eazyportal.gradle.eazy-portal")</code></pre>
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">plugins {
+    id("org.eazyportal.plugin.portal")
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">gradle.properties</div>
+<div class="content">
+<pre class="highlight"><code class="language-properties" data-lang="properties">eazyPortalPluginVersion = +</code></pre>
 </div>
 </div>
 </li>
@@ -779,49 +762,40 @@ The <code>group</code> will be set to "org.eazyportal.&lt;rootProject.name &gt;"
 </table>
 </div>
 </li>
-<li>
-<p>Add the following sub-module: <code>api</code>, <code>service</code>, and <code>web</code></p>
-<div class="listingblock">
-<div class="title">settings.groovy.kts</div>
-<div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">include("example-api")
-project(":example-api").projectDir = file("api")
-
-include("example-service")
-project(":example-service").projectDir = file("service")
-
-include("example-web")
-project(":example-web").projectDir = file("web")</code></pre>
+</ul>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Currently, these sub-modules are required, but it is planned to change this behaviour. (<a href="https://eazyportal.myjetbrains.com/youtrack/issue/TOOLS-9">TOOLS-9</a>)
-</td>
-</tr>
-</table>
-</div>
-</li>
+<div class="sect4">
+<h5 id="_implement_the_main_aka_application_module">Implement the main aka <code>application</code> module</h5>
+<div class="ulist">
+<ul>
 <li>
 <p>Create a <em>SpringBoot</em> main class in the root project (src/main/java/)</p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.ExampleApplication.java</div>
+<div class="title">org.eazyportal.example.ExampleApplication.java (see it on <a href="https://github.com/eazyportal/example/tree/master/src/main/java/org/eazyportal/example/ExampleApplication.java">GitHub</a>)</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication(
-    scanBasePackages = {"org.eazyportal.core", "org.eazyportal.example"}
-)
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication(scanBasePackages = {
+    "org.eazyportal.core",
+    "org.eazyportal.example"
+})
 public class ExampleApplication {
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         SpringApplication.run(ExampleApplication.class, args);
     }
 
 }</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Enable some locally running service configuration (enable: Swagger, CORS)</p>
+<div class="listingblock">
+<div class="title">application.yaml</div>
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">spring:
+  profiles:
+    active: local</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">
@@ -836,40 +810,6 @@ It is required to add the Core module package to the <code>scanBasePackages</cod
 </tr>
 </table>
 </div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_create_rest_controller">Create REST controller</h4>
-<div class="paragraph">
-<p>All official <em>eazyPortal</em> modules use the <code>org.eazyportal.&lt;service-name&gt;.&lt;module&gt;.more.packages</code> package structure, so this tutorial will use that as well.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Create the folder structure for the <code>api</code> module (api/src/main/java)</p>
-</li>
-<li>
-<p>Create the response which extends the <code>EazyResponse</code></p>
-<div class="listingblock">
-<div class="title">org.eazyportal.example.api.response.model.ExampleResponse.java</div>
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java"></code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Create the folder structure for the <code>web</code> module (web/src/main/java)</p>
-</li>
-<li>
-<p>Create the REST controller which extends the <code>EazyRestController&lt;BasicRequestContext&gt;</code></p>
-<div class="listingblock">
-<div class="title">org.eazyportal.example.web.rest.contoller.ExampleContoller.java</div>
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java"></code></pre>
-</div>
-</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -877,41 +817,7 @@ It is required to add the Core module package to the <code>scanBasePackages</cod
 <div class="title">Note</div>
 </td>
 <td class="content">
-<code>BasicRequestContext</code> is a <em>ModelAttribute</em> that is created by the <code>EazyRestController</code>
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Important</div>
-</td>
-<td class="content">
-Use the <code>/api/</code> prefix for each REST endpoint.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Create the <code>ExampleWebSecurityConfigurer</code> which extends the <code>EazyWebSecurityConfigurer</code>.
-This is required to allow access to the new endpoint.</p>
-<div class="listingblock">
-<div class="title">org.eazyportal.example.web.security.config.ExampleWebSecurityConfigurer.java</div>
-<div class="content">
-<pre></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-The <code>EazyWebSecurityConfigurer</code> will be replaced with an interface in the future. (CORE-X)
+Currently, <em>eazyPortal</em> supports only Java, but the Kotlin support is coming.
 </td>
 </tr>
 </table>
@@ -920,114 +826,366 @@ The <code>EazyWebSecurityConfigurer</code> will be replaced with an interface in
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_create_custom_requestcontext">Create custom RequestContext</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Create the <code>ExampleRequestContext</code> which extends the <code>EazyRequestContext</code></p>
-<div class="listingblock">
-<div class="title">org.eazyportal.example.api.request.model.ExampleRequestContext.java</div>
-<div class="content">
-<pre></pre>
-</div>
-</div>
-</li>
-<li>
-<p>To be able to use this RequestContext, it is required to implement a mapper for it.
-Create the <code>ExampleContextMapper</code>.</p>
-<div class="listingblock">
-<div class="title">org.eazyportal.example.web.rest.mapper.ExampleContextMapper.java</div>
-<div class="content">
-<pre></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Now it can be used in the REST controllers.
-Create a new REST controller.</p>
-<div class="listingblock">
-<div class="title">org.eazyportal.example.web.rest.contoller.ExampleContextRestContoller.java</div>
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java"></code></pre>
-</div>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Important</div>
-</td>
-<td class="content">
-Do not forget to add the new endpoint to the <code>ExampleWebSecurityConfigurer</code>, otherwise it won&#8217;t be available.
-</td>
-</tr>
-</table>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_create_the_ui_library_and_application">Create the UI Library and Application</h4>
+<div class="sect4">
+<h5 id="_implement_the_api_module">Implement the <code>api</code> module</h5>
 <div class="paragraph">
-<p>All official <em>eazyPortal</em> modules depend on React Application and React Library, so this tutorial will use them as well.
-To create React Library this tutorial uses the <a href="https://www.npmjs.com/package/create-react-library">create-react-library</a> npm package.</p>
+<p>First to be able to request something and to get back a response from the service, we need to add them.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Add a new <code>ui</code> submodule</p>
+<p>Configure the submodule</p>
 <div class="listingblock">
-<div class="title">settings.gradle.kts</div>
+<div class="title">settings.groovy.kts</div>
 <div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">include("example-ui")
-project(":example-ui").projectDir = file("ui")</code></pre>
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">include("api")
+project(":api").name = "example-api"</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Initializing a new React library, and provide the necessary information as the script requests them</p>
+<p>Create the <code>api/src/main/java</code> folder structure</p>
+</li>
+<li>
+<p>Create a request object which implements the <code>EazyRequest</code></p>
 <div class="listingblock">
+<div class="title">org.eazyportal.example.api.request.model.CreateExampleRequest (see it on <a href="https://github.com/eazyportal/example/tree/master/api/src/main/java/org/eazyportal/example/api/request/model/CreateExampleRequest.java">GitHub</a>)</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ npx create-react-library
+<pre class="highlight"><code class="language-java" data-lang="java">public class CreateExampleRequest extends EazyRequest {
 
-? Package Name @eazyportal/example-ui
-? Package Description eazyPortal - Example-UI Library
-? Author's GitHub Handle Yg0R2
-? GitHub Repo Path https://github.com/eazyportal/example-ui
-? License https://github.com/eazyportal/core/blob/master/LICENSE
-? Package Manager npm
-? Template default</code></pre>
+    @Nullable
+    private final Integer age;
+    private final String name;
+
+    // Getters
+
+    public static class Builder extends EazyRequest.Builder&lt;CreateExampleRequest&gt; {
+
+        // Builder
+
+    }
+
+}</code></pre>
 </div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-The current implementation does not use TypeScript, but it is planned to introduce it.
-</td>
-</tr>
-</table>
 </div>
 </li>
 <li>
-<p>The <code>create-react-library</code> script creates the 'example-ui' folder.
-To follow the naming convention and to align with the configuration as set in the first step, rename the folder to <code>ui</code>.</p>
-</li>
-<li>
-<p>Add the <code>@eazyportal/core-ui</code> as a dependency to the library</p>
+<p>Create a response object which implements the <code>EazyResponse</code></p>
 <div class="listingblock">
-<div class="title">ui/package.json</div>
+<div class="title">org.eazyportal.example.api.response.model.ExampleResponse.java (see it on <a href="https://github.com/eazyportal/example/tree/master/api/src/main/java/org/eazyportal/example/api/response/model/ExampleResponse.java">GitHub</a>)</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">  "dependencies": {
-    "@eazyportal/core-ui": "^&lt;latest-version&gt;"
-  }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public final class ExampleResponse extends EazyResponse {
+
+    @Nullable
+    private final Integer age;
+    private final String name;
+
+    // Getters
+
+    public static class Builder extends EazyResponse.Builder&lt;ExampleResponse&gt; {
+
+        // Builder
+
+    }
+
+}</code></pre>
 </div>
 </div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_implement_the_dao_module">Implement the <code>dao</code> module</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Configure the submodule</p>
+<div class="listingblock">
+<div class="title">settings.groovy.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">include("dao")
+project(":dao").name = "example-dao"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create the <code>dao/src/main/java</code> folder structure</p>
+</li>
+<li>
+<p>Create a DB representation entity in the <code>dao</code> module which implements the <code>EazyEntity</code></p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.dao.model.ExampleEntity.java (see it on <a href="https://github.com/eazyportal/example/tree/master/dao/src/main/java/org/eazyportal/example/dao/model/ExampleEntity.java">GitHub</a>)</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+public class ExampleEntity implements EazyEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true, updatable = false)
+    private long id;
+
+    @Column
+    @Nullable
+    private Integer age;
+
+    @Column(nullable = false)
+    private String name;
+
+    // Getters
+
+    public static class Builder implements EazyEntity.Builder {
+
+        // Builder
+
+    }
+
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a Spring-Data <code>@Repository</code> to establish the connection with the DB</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.dao.repository.ExampleRepository.java (see it on <a href="https://github.com/eazyportal/example/tree/master/dao/src/main/java/org/eazyportal/example/dao/repository/ExampleRepository.java">GitHub</a>)</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Repository
+public interface ExampleRepository extends CrudRepository&lt;ExampleEntity, Long&gt; {
+
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a DAO class with <code>create</code> and <code>getById</code> methods, and annotate it with <code>@EazyDao</code> (see it on <a href="https://github.com/eazyportal/example/tree/master/dao/src/main/java/org/eazyportal/example/dao/ExampleDao.java">GitHub</a>)</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.dao.ExampleDao.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@EazyDao
+public class ExampleDao {
+
+    @Autowired
+    private ExampleRepository exampleRepository;
+
+    public ExampleEntity create(ExampleEntity entity) {
+        return exampleRepository.save(entity);
+    }
+
+    public Stream&lt;ExampleEntity&gt; getAll() {
+        return StreamSupport.stream(exampleRepository.findAll().spliterator(), false);
+    }
+
+    public ExampleEntity getById(long id) {
+        return exampleRepository.findById(id)
+                .orElseThrow(() -&gt; new EntityNotFoundException("Example entity does not found with id:" + id));
+    }
+
+}</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_implement_the_service_module">Implement the <code>service</code> module</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Configure the submodule</p>
+<div class="listingblock">
+<div class="title">settings.groovy.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">include("service")
+project(":service").name = "example-service"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create the <code>service/src/main/java</code> folder structure</p>
+</li>
+<li>
+<p>Create a mapper class wich implements <code>EazyEntityMapper</code></p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.service.mapper.ExampleMapper.java (see it on <a href="https://github.com/eazyportal/example/tree/master/service/src/main/java/org/eazyportal/example/service/mapper/ExampleMapper.java">GitHub</a>)</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Component
+public class ExampleEntityMapper implements EazyEntityMapper&lt;ExampleEntity, ExampleResponse&gt; {
+
+    @Override
+    public ExampleResponse map(ExampleEntity entity) {
+        return exampleResponseBuilder()
+            .withAge(entity.getAge())
+            .withName(entity.getName())
+            .build();
+    }
+
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a service class</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.service.ExampleService.java (see it on <a href="https://github.com/eazyportal/example/tree/master/service/src/main/java/org/eazyportal/example/service/ExampleService.java">GitHub</a>)</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Component
+public class ExampleService {
+
+    @Autowired
+    private ExampleDao exampleDao;
+    @Autowired
+    private ExampleEntiryMapper exampleEntiryMapper;
+
+    public ExampleResponse create(CreateExampleRequest createExampleRequest) {
+        var exampleEntity = exampleEntityBuilder()
+            .build(exampleDao::create);
+
+        return exampleEntiryMapper.map(exampleEntity);
+    }
+
+    public List&lt;ExampleResponse&gt; getAll() {
+        return exampleDao.getAll()
+            .map(exampleEntityMapper::map)
+            .collect(Collectors.toList());
+    }
+
+    public ExampleResponse getById(long id) {
+        return exampleEntiryMapper.map(exampleDao.getById(id));
+    }
+
+}</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The reason is behind that the <code>service</code> layer returns with the response is simple.
+The <code>web</code> layer does the verification on the request and just act as a proxy in case of the response.
+And the <code>behemoth</code> module is depending on the <code>service</code> layer, but you will hear more about that later.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_implement_the_web_module">Implement the <code>web</code> module</h5>
+<div class="paragraph">
+<p>Every REST controller should implement the <code>EazyRestController</code> and have only one purpose to exist</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Configure the submodule</p>
+<div class="listingblock">
+<div class="title">settings.groovy.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">include("web")
+project(":web").name = "example-web"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create the <code>web/src/main/java</code> folder structure</p>
+</li>
+<li>
+<p>Create a REST controller which implements the <code>EazyRestController</code> for creating new <code>Example</code>s</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.web.rest.contoller.CreateExampleRestController.java (see it on <a href="https://github.com/eazyportal/example/tree/master/web/src/main/java/org/eazyportal/example/web/rest/controller/CreateExampleRestController.java">GitHub</a>)</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+@RequestMapping("/api/example")
+public class CreateExampleRestController implements EazyRestController {
+
+    @Autowired
+    private ExampleService exampleService;
+
+    @PostMapping
+    public ExampleResponse create(@RequestBody CreateExampleRequest createExampleRequest) {
+        return exampleService.create(createExampleRequest);
+    }
+
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a REST controller which implements the <code>EazyRestController</code> for getting <code>Example</code>s</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.web.rest.contoller.GetExampleRestController.java (see it on <a href="https://github.com/eazyportal/example/tree/master/web/src/main/java/org/eazyportal/example/web/rest/controller/GetExampleRestController.java">GitHub</a>)</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+@RequestMapping("/api/example")
+public class GetExampleRestController implements EazyRestController {
+
+    @Autowired
+    private ExampleService exampleService;
+
+    @GetMapping
+    public List&lt;ExampleResponse&gt; getAll() {
+        return exampleService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public ExampleResponse getById(@PathVariable long id) {
+        return exampleService.getById(id);
+    }
+
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Optionally</strong>, if you want to enable public access to any endpoint, you have to configure it.
+Create a security configurer which implements the <code>EazyWebSecurityConfigurer</code>.</p>
+<div class="listingblock">
+<div class="title">org.eazyportal.example.web.security.config.ExampleWebSecurityConfigurer.java (see it on <a href="https://github.com/eazyportal/example/tree/master/web/src/main/java/org/eazyportal/example/web/security/config/ExampleWebSecurityConfigurer.java">GitHub</a>)</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Component
+public class ExampleWebSecurityConfigurer implements EazyWebSecurityConfigurer {
+
+    @Override
+    public void configure(ExpressionUrlAuthorizationConfigurer&lt;HttpSecurity&gt;.ExpressionInterceptUrlRegistry authorizeRequests) {
+        authorizeRequests
+                .antMatchers(HttpMethod.GET, "/api/examples/**").permitAll();
+    }
+
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Optionally</strong>, if you want to enable swagger, you can configure it</p>
+<div class="listingblock">
+<div class="title">application.yaml</div>
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">springdoc:
+  swagger-ui:
+    enabled: true</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_create_the_ui_library_and_application">Create the UI Library and Application</h5>
+<div class="paragraph">
+<p>All official <em>eazyPortal</em> UI modules are written in React.
+It has 2 parts a library and an application.
+The library is reused in the <em>Behemoth</em> project.
+Therefore, the application should be as lightweight as possible, and should contain only the bare minimum, so the library should contain everything.</p>
+</div>
+<div class="paragraph">
+<p>UI modules are stored in Git submodules.
+So they can have their limited but separated lifecycles as micro-frontends.
+They have limited lifecycles because they are released together with the applications.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a new git repository: <code>example-ui</code></p>
+</li>
+<li>
+<p>Add an initial commit and push it to GitHub</p>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1035,197 +1193,262 @@ To follow the naming convention and to align with the configuration as set in th
 <div class="title">Important</div>
 </td>
 <td class="content">
-Delete <code>react*</code> dependencies from the <code>devDependencies</code> section.
-<code>core-ui</code> already provides these dependencies and <a href="https://github.com/eazyportal/core-ui/blob/master/package.json#L29-L37">many more</a>.
+Adding an empty repository as a submodule will fail.
+This is why an initial commit is required in that repository.
 </td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p>Create the <code>.npmrc</code> file and add a new package repository for the <code>@eazyportal</code> dependencies.</p>
+<p>Add the repository to the project as a Git submodule with the name of <code>ui</code></p>
 <div class="listingblock">
-<div class="title">ui/.npmrc</div>
 <div class="content">
-<pre class="highlight"><code>registry=https://registry.npmjs.org/
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ git submodule add git@github.com:eazyportal/example-ui.git ui</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Configure the submodule</p>
+<div class="listingblock">
+<div class="title">settings.groovy.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">include("ui")
+project(":ui").name = "example-ui"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create the following folder structure</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>ui
+├───app
+│   ├───public
+│   │   └───index.html
+│   ├───src
+│   │   └───index.jsx
+│   └───package.json
+├───lib
+│   └───src
+│       └───index.jsx
+├───.npmrc
+└───package.json</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Configure the npm repository by creating the <code>.npmrc</code> file and add a new repository for the <code>@eazyportal</code> dependencies</p>
+<div class="listingblock">
+<div class="title">.npmrc</div>
+<div class="content">
+<pre class="highlight"><code class="language-properties" data-lang="properties">always-auth=true
+registry=https://registry.npmjs.org/
 @eazyportal:registry=https://npm.pkg.github.com/</code></pre>
 </div>
 </div>
 </li>
-<li>
-<p>The library and the application configured.
-Before you can start using them, you have to update the dependencies (<code>create-react-library</code> has some outdated ones).
-After that, it is required to install these dependencies.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ ncu -u
-$ npm install
-$ cd example/
-$ npm install
-$ cd ..</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Now everything is ready to use</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ npm run start &amp;
-$ cd example/
-$ npm run start</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Open <a href="http://localhost:3000" class="bare">http://localhost:3000</a> if it did not open automatically</p>
-</li>
 </ul>
 </div>
-<div class="paragraph">
-<p>At this point, it is possible to build and run the whole application (back-end and front-end) together.</p>
-</div>
-<details>
-<summary class="title">Run the wole application</summary>
-<div class="content">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootRun</code></pre>
-</div>
-</div>
-</div>
-</details>
-<details>
-<summary class="title">Build the whole application into a Docker image</summary>
-<div class="content">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootBuildImage</code></pre>
-</div>
-</div>
-</div>
-</details>
-</div>
-<div class="sect3">
-<h4 id="_customizing_the_ui_content">Customizing the UI content</h4>
-<div class="paragraph">
-<p>Most of the official <em>eazyPortal</em> UI modules provides the ability to reuse the library in the <em>Behemoth</em> project.
-To achieve this, it required to change the generated code.
-The application should be as lightweight as possible, and should contain only the bare minimum.
-Therefore, the library should contain everything.</p>
-</div>
-<h5 id="_refactor_the_generated_code" class="discrete">Refactor the generated code</h5>
+<h6 id="_initialize_the_main_project" class="discrete">Initialize the main project</h6>
 <div class="ulist">
 <ul>
 <li>
-<p>Move <code>App*.js</code> and <code>index.css</code> from the application (example/src/) to the library (src/).</p>
-</li>
-<li>
-<p>Replace the content of the <code>index.js</code> of the application with this:</p>
-<div class="listingblock">
-<div class="title">example/src/ExampleComponent.js</div>
+<p>Add content to the <code>package.json</code> of the library</p>
+<details>
+<summary class="title">package.json</summary>
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">import Example from '@eazyportal/example-ui'
-
-import React from 'react'
-import ReactDOM from 'react-dom'
-
-import '@eazyportal/example-ui/dist/index.css'
-
-ReactDOM.render(&lt;Example.App /&gt;, document.getElementById('root'))</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Move and rename the <code>index*.js</code> of the library to <code>src/components/ExampleComponent*.js</code>.
-Move and rename the <code>styles.module.css</code> to <code>src/components/ExampleComponent.module.css</code>.
-It is required to change the <code>styles.module.css</code> in the <code>ExampleComponent.js</code> too to point to the correct css file.</p>
-</li>
-<li>
-<p>Update the import of <code>ExampleComponent</code> and <code>index.css</code> in the <code>App.js</code> to point to the renamed files.</p>
 <div class="listingblock">
-<div class="title">src/App.js</div>
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">import { ExampleComponent } from './components/ExampleComponent'
-import './components/ExampleComponent'</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "name": "@eazyportal/example-ui",
+  "version": "0.0.1-SNAPSHOT",
+  "description": "eazyPortal - Example-UI Library",
+  "private": true,
+  "scripts": {
+    "clean": "yarn --cwd ./lib/ clean &amp; yarn --cwd ./app/ clean",
+    "build": "yarn --cwd ./lib/ build &amp;&amp; yarn --cwd ./app/ build",
+    "start": "yarn --cwd ./lib/ start | yarn --cwd ./app/ start"
+  },
+  "workspaces": [
+    "app",
+    "lib"
+  ]
+}</code></pre>
+</div>
+</div>
+</div>
+</details>
+</li>
+</ul>
+</div>
+<h6 id="_initialize_the_library_workspace" class="discrete">Initialize the library workspace</h6>
+<div class="ulist">
+<ul>
+<li>
+<p>Add content to the <code>package.json</code> of the library</p>
+<details>
+<summary class="title">package.json</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "name": "@eazyportal/example-ui-lib",
+  "version": "0.0.1-SNAPSHOT",
+  "description": "eazyPortal - Example-UI Library",
+  "license": "https://github.com/eazyportal/core/blob/master/LICENSE",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": "https://github.com/eazyportal/example-ui",
+  "main": "dist/index.js",
+  "module": "dist/index.modern.js",
+  "source": "src/index.jsx",
+  "engines": {
+    "node": "&gt;=18",
+    "npm": "&gt;=8"
+  },
+  "scripts": {
+    "clean": "fse remove --quiet ./dist",
+    "build": "microbundle-crl --no-compress --format modern,cjs",
+    "start": "microbundle-crl watch --no-compress --format modern,cjs",
+    "prepare": "run-s build",
+    "predeploy": "cd ../app &amp;&amp; yarn build",
+    "deploy": "gh-pages -d ../app/build"
+  },
+  "dependencies": {
+    "@eazyportal/core-ui-lib": "^0.4.1"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@atao60/fse-cli": "*",
+    "cross-env": "*",
+    "gh-pages": "*",
+    "microbundle-crl": "*",
+    "npm-run-all": "*"
+  },
+  "files": [
+    "dist"
+  ]
+}</code></pre>
+</div>
+</div>
+</div>
+</details>
+</li>
+</ul>
+</div>
+<h6 id="_initialize_the_application_workspace" class="discrete">Initialize the application workspace</h6>
+<div class="ulist">
+<ul>
+<li>
+<p>Add content to the <code>package.json</code> of the application</p>
+<details>
+<summary class="title">example/package.json</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "name": "@eazyportal/example-ui-app",
+  "homepage": ".",
+  "version": "0.0.1-SNAPSHOT",
+  "private": true,
+  "scripts": {
+    "clean": "fse remove --quiet ./build",
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "dependencies": {
+    "@eazyportal/example-ui-lib": "file:../lib"
+  },
+  "devDependencies": {
+    "@atao60/fse-cli": "*",
+    "react-scripts": "*"
+  },
+  "browserslist": [
+    "defaults"
+  ]
+}</code></pre>
+</div>
+</div>
+</div>
+</details>
+</li>
+</ul>
+</div>
+<h6 id="_validate_the_ui_module" class="discrete">Validate the UI module</h6>
+<div class="paragraph">
+<p>Now the library and the application are ready to be used.
+However, it won&#8217;t display anything because the <code>jsx</code> and the <code>html</code> files are empty.
+Nevertheless, it is a good step to validate if everything is working as expected.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It is a new project, therefor it is required to install the dependencies before use</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ yarn install</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Create a new <code>index.js</code> in the library</p>
+<p>Start the library and the application</p>
 <div class="listingblock">
-<div class="title">src/index.js</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ yarn start</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_implementing_the_ui_module">Implementing the UI module</h5>
+<h6 id="_implement_the_library" class="discrete">Implement the library</h6>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a component to display one example entity from the backend</p>
+<div class="listingblock">
+<div class="title">src/components/ExampleComponent.jsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-js" data-lang="js">import React from 'react'
 
-import App from './App'
+import styles from './ExampleComponent.module.css'
 
-import './index.css'
-
-const Auth = {
-  App
+const ExampleComponent = ({ text }) =&gt; {
+  return &lt;div className={styles.test}&gt;Example Component: {text}&lt;/div&gt;
 }
 
-export default Auth</code></pre>
+export default ExampleComponent</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">src/components/ExampleComponent.module.css</div>
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">.test {
+  margin: 2em;
+  padding: 0.5em;
+  border: 2px solid #000;
+  font-size: 2em;
+  text-align: center;
+}</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Now everything is ready to use</p>
+<p>The backend returns with multiple example entities, so create a wrapper for them <code>ExampleListComponent</code></p>
 <div class="listingblock">
+<div class="title">src/components/ExampleListComponent.js</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ npm run start &amp;
-$ cd example/
-$ npm run start</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Open <a href="http://localhost:3000" class="bare">http://localhost:3000</a> if it did not open automatically</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>At this point, it is possible to build and run the whole application (back-end and front-end) together.</p>
-</div>
-<details>
-<summary class="title">Run the wole application</summary>
-<div class="content">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootRun</code></pre>
-</div>
-</div>
-</div>
-</details>
-<details>
-<summary class="title">Build the whole application into a Docker image</summary>
-<div class="content">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootBuildImage</code></pre>
-</div>
-</div>
-</div>
-</details>
-<h5 id="_display_response_from_rest_endpoint" class="discrete">Display response from REST endpoint</h5>
-<div class="paragraph">
-<p>After refactoring the generated code, it is ready to be customized.
-During the previous chapter 2 REST endpoint was implemented, so let&#8217;s use them.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Create a new component <code>ExampleListComponent</code></p>
-<details>
-<summary class="title">src/components/ExampleListComponent.js</summary>
-<div class="content">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">import Core from '@eazyportal/core-ui'
+<pre class="highlight"><code class="language-js" data-lang="js">import { axiosService } from '@eazyportal/core-ui-lib'
 
 import React from 'react'
 
-import { ExampleComponent } from './ExampleComponent'
+import ExampleComponent from './ExampleComponent'
 
 class ExampleListComponent extends React.Component {
 
@@ -1234,14 +1457,14 @@ class ExampleListComponent extends React.Component {
   }
 
   componentDidMount() {
-    Core.axiosService.get(`/api/examples`)
+    axiosService.get(`/api/examples`)
       .then(response =&gt; this.setState({examples: response.data}))
       .catch(error =&gt; console.log(error))
   }
 
   render() {
     let renderedExamples = null
-    if (this.state.examples) {
+    if (this.state.examples?.length) {
       renderedExamples = Object.entries(this.state.examples)
         .map(([index, example]) =&gt; {
           return &lt;ExampleComponent
@@ -1249,6 +1472,9 @@ class ExampleListComponent extends React.Component {
             text={`Hello, my name is ${example.name} and I am ${example.age} years old.`}
           /&gt;
         })
+    }
+    else {
+      renderedExamples = &lt;ExampleComponent text="Database is empty." /&gt;
     }
 
     return (
@@ -1263,19 +1489,15 @@ class ExampleListComponent extends React.Component {
 export default ExampleListComponent</code></pre>
 </div>
 </div>
-</div>
-</details>
 </li>
 <li>
-<p>Update the <code>App</code> component to use the new component</p>
-<details>
-<summary class="title">src/App.js</summary>
-<div class="content">
+<p>Create the main entry point of the library</p>
 <div class="listingblock">
+<div class="title">src/App.jsx</div>
 <div class="content">
 <pre class="highlight"><code class="language-js" data-lang="js">import React from 'react'
 
-import { ExampleComponent } from './components/ExampleComponent'
+import ExampleComponent from './components/ExampleComponent'
 import ExampleListComponent from './components/ExampleListComponent'
 
 import source from './App.module.css'
@@ -1287,7 +1509,9 @@ class App extends React.Component {
   }
 
   buttonClickHandler = () =&gt; {
-    this.setState({loadData: !this.state.loadData})
+    this.setState({
+      loadData: !this.state.loadData
+    })
   }
 
   render() {
@@ -1301,8 +1525,8 @@ class App extends React.Component {
 
     return (
       &lt;div&gt;
-        &lt;div className={source.sourceSwitchWrapper}&gt;
-          &lt;button className={source.sourceSwitchButton} onClick={this.buttonClickHandler}&gt;Switch between data sources&lt;/button&gt;
+        &lt;div className={source.loadDataWrapper}&gt;
+          &lt;button className={source.loadDataButton} onClick={this.buttonClickHandler}&gt;Load data from backend&lt;/button&gt;
         &lt;/div&gt;
         &lt;div&gt;
           {renderedComponent}
@@ -1315,75 +1539,201 @@ class App extends React.Component {
 export default App</code></pre>
 </div>
 </div>
-</div>
-</details>
 </li>
 <li>
 <p>Add some styling to the <code>App</code> component</p>
-<details>
-<summary class="title">src/App.module.css</summary>
-<div class="content">
 <div class="listingblock">
+<div class="title">src/App.module.css</div>
 <div class="content">
-<pre class="highlight"><code class="language-css" data-lang="css">.sourceSwitchButton {
+<pre class="highlight"><code class="language-css" data-lang="css">.loadDataButton {
   transform: translateX(-50%);
 }
 
-.sourceSwitchWrapper {
+.loadDataWrapper {
   left: 50%;
   margin-top: 2em;
   position: relative;
 }</code></pre>
 </div>
 </div>
-</div>
-</details>
 </li>
 <li>
-<p>Rebuild the UI library, the UI application, and start the Spring Boot application.</p>
+<p>Export this <code>App</code> through the <code>Example</code> component</p>
 <div class="listingblock">
+<div class="title">index.jsx</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew cleanUi bootRun</code></pre>
+<pre class="highlight"><code class="language-js" data-lang="js">import App from './App'
+
+const Example = {
+  App
+}
+
+export default Example</code></pre>
 </div>
 </div>
 </li>
 </ul>
 </div>
-<h5 id="_continuous_ui_development" class="discrete">Continuous UI development</h5>
+<h6 id="_implement_the_application" class="discrete">Implement the application</h6>
+<div class="ulist">
+<ul>
+<li>
+<p>Use the <code>App</code> from the library in the <code>index.jsx</code> to render it</p>
+<div class="listingblock">
+<div class="title">example/src/index.jsx</div>
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">import Example from '@eazyportal/example-ui-lib'
+
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+
+import '@eazyportal/core-ui-lib/dist/index.css'
+import '@eazyportal/example-ui-lib/dist/index.css'
+
+ReactDOM.createRoot(document.getElementById('example-root'))
+  .render(&lt;Example.App /&gt;)</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Update the <code>index.html</code> for React to render the component</p>
+<div class="listingblock">
+<div class="title">example/public/index.html</div>
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">Unresolved directive in getting-started/create-a-custom-service/create-manually/ui/implement-the-ui-module.adoc - include::__resources/app/public/index.html[]</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_test_the_service">Test the service</h5>
+<h6 id="_test_the_backend" class="discrete">Test the backend</h6>
+<div class="paragraph">
+<p>It is possible to build/run/test only the backend.</p>
+</div>
+<div class="paragraph">
+<p>Start the Spring Boot application from the project&#8217;s main folder.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootRun -x deployUi</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Open <a href="http://localhost:8080" class="bare">http://localhost:8080</a> in any browser</p>
+</li>
+</ul>
+</div>
+<h6 id="_test_the_frontend" class="discrete">Test the frontend</h6>
+<div class="paragraph">
+<p>It is possible to build/run/test only the frontend.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Start the library and the application</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ yarn run start &amp;
+$ cd exemple/
+$ yarn run start</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open <a href="http://localhost:3000" class="bare">http://localhost:3000</a> if it did not open automatically</p>
+</li>
+</ul>
+</div>
+<h6 id="_test_the_whole_application_together" class="discrete">Test the whole application together</h6>
+<div class="paragraph">
+<p>At this point, it is possible to build, run and test the whole application (backend and frontend) together.</p>
+</div>
+<div class="listingblock">
+<div class="title">Run the whole application</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootRun</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Build the whole application into a Docker image</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ ./gradlew bootBuildImage</code></pre>
+</div>
+</div>
+<h6 id="_continuous_ui_development" class="discrete">Continuous UI development</h6>
 <div class="paragraph">
 <p>For continuous development this approach is not the best, because it requires you to constantly stop, rebuild, and restart all applications.
 To avoid this, fortunately there is an option.
-You have to start everything separately.</p>
+You have to start the frontend and the backend separately (as stated before).</p>
 </div>
 <div class="paragraph">
-<p>Unfortunately this solution requires a proxy (e.g. Nginx), or some hardcoded values.
-You have to proxy the REST requests to the Spring Boot application, OR enable <code>@CrossOrigin</code> on the endpoint and provide the full URL for <code>axios</code>.
+<p>Unfortunately, this solution requires a proxy (e.g. Nginx), or some hardcoded values.
+You have to proxy the REST requests to the Spring Boot application, OR provide the full URL for <code>axios</code>.
 (At least in the current version.)</p>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_contribution_to_the_eazyportal">Contribution to the <em>eazyPortal</em></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_repository_structure">Repository Structure</h3>
 <div class="paragraph">
-<p>Start the Spring Boot application from the projects main folder.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ ./gradlew bootRun -x deployUi</pre>
-</div>
+<p>All <em>eazyPortal</em> repositories follow the <a href="https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow">Gitflow workflow</a>.
+The <code>master</code> branch is used for releases only.
+Everything which goes to the <code>master</code> branch that will automatically release a new version.
+Each feature should go to the <code>feature</code> branch.</p>
 </div>
 <div class="paragraph">
-<p>Start "watching" for library changes from the <code>ui</code> module folder.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ npm run start</pre>
-</div>
+<p>Those services which have UI component, the repository contains a submodule.
+These submodules follow the same Gitflow workflow principal.
+The purpose of this structure is to be able to decouple the front-end code and development from the back-end code and development.
+However, they have to be released together.</p>
 </div>
 <div class="paragraph">
-<p>Start the UI application from the <code>example</code> folder of the <code>ui</code> module.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ npm run start</pre>
+<p>For further details about the required/predefined project structure, submodules, and their dependency tree check the <a href="https://github.com/eazyportal/eazyGradlePlugin">eazyGradlePlugin</a>.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_how_to_contribute">How to Contribute</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Fork the repository where you want to contribute</p>
+</li>
+<li>
+<p>Clone your fork</p>
+</li>
+<li>
+<p>Name your fork as <code>origin</code> and add the forked one as <code>upstream</code></p>
+</li>
+<li>
+<p>Implement the feature</p>
+</li>
+<li>
+<p>Send PR from your fork into the <code>feature</code> branch of the <code>upstream</code> repository</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_create_a_release">How to Create a Release</h3>
+<div class="paragraph">
+<p>Merge everything into the <code>feature</code> branch.
+If there are UI changes what you want to release, merge the UI submodule into the <code>feature</code> branch as well.
+Use PRs for this purpose.</p>
+</div>
+<div class="paragraph">
+<p>After everything is in order, use the Jenkins job (TBD) to release it.
+All artifacts will be published to Github packages (under development).</p>
 </div>
 </div>
 </div>
@@ -1391,7 +1741,7 @@ You have to proxy the REST requests to the Spring Boot application, OR enable <c
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-12 23:06:58 +0100
+Last updated 2022-11-25 17:10:30 +0100
 </div>
 </div>
 </body>
