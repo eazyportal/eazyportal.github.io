@@ -770,20 +770,20 @@ The <code>group</code> will be set to "org.eazyportal.&lt;rootProject.name &gt;"
 <div class="ulist">
 <ul>
 <li>
-<p>Create a <em>SpringBoot</em> main class in the root project (src/main/java/)</p>
+<p>Create a <em>SpringBoot</em> main class in the root project (src/main/kotlin/)</p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.ExampleApplication.java (see it on <a href="https://github.com/eazyportal/example/tree/master/src/main/java/org/eazyportal/example/ExampleApplication.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.ExampleApplication.kt (see it on <a href="https://github.com/eazyportal/example/tree/master/src/main/kotlin/org/eazyportal/example/ExampleApplication.kt">GitHub</a>)</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication(scanBasePackages = {
-    "org.eazyportal.core",
-    "org.eazyportal.example"
-})
-public class ExampleApplication {
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication(
+    scanBasePackages = [
+        "org.eazyportal.core",
+        "org.eazyportal.example"
+    ]
+)
+class ExampleApplication
 
-    public static void main(String... args) {
-        SpringApplication.run(ExampleApplication.class, args);
-    }
-
+fun main(vararg args: String) {
+    SpringApplication.run(ExampleApplication::class.java, *args)
 }</code></pre>
 </div>
 </div>
@@ -806,18 +806,6 @@ public class ExampleApplication {
 </td>
 <td class="content">
 It is required to add the Core module package to the <code>scanBasePackages</code> to enable <em>eazyPortal</em> preconfigurations.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Currently, <em>eazyPortal</em> supports only Java, but the Kotlin support is coming.
 </td>
 </tr>
 </table>
@@ -849,46 +837,25 @@ project(":api").name = "example-api"</code></pre>
 <li>
 <p>Create a request object which implements the <code>EazyRequest</code></p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.api.request.model.CreateExampleRequest (see it on <a href="https://github.com/eazyportal/example/tree/master/api/src/main/java/org/eazyportal/example/api/request/model/CreateExampleRequest.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.api.request.model.CreateExampleRequest (see it on <a href="https://github.com/eazyportal/example/tree/master/api/src/main/kotlin/org/eazyportal/example/api/request/model/CreateExampleRequest.kt">GitHub</a>)</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class CreateExampleRequest extends EazyRequest {
-
-    @Nullable
-    private final Integer age;
-    private final String name;
-
-    // Getters
-
-    public static class Builder extends EazyRequest.Builder&lt;CreateExampleRequest&gt; {
-
-        // Builder
-
-    }
-
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">data class CreateExampleRequest(
+    val age: Int?,
+    val name: String
+) : EazyRequest()</code></pre>
 </div>
 </div>
 </li>
 <li>
 <p>Create a response object which implements the <code>EazyResponse</code></p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.api.response.model.ExampleResponse.java (see it on <a href="https://github.com/eazyportal/example/tree/master/api/src/main/java/org/eazyportal/example/api/response/model/ExampleResponse.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.api.response.model.ExampleResponse.kt (see it on <a href="https://github.com/eazyportal/example/tree/master/api/src/main/kotlin/org/eazyportal/example/api/response/model/ExampleResponse.kt">GitHub</a>)</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public final class ExampleResponse extends EazyResponse {
-
-    @Nullable
-    private final Integer age;
-    private final String name;
-
-    // Getters
-
-    public static class Builder extends EazyResponse.Builder&lt;ExampleResponse&gt; {
-
-        // Builder
-
-    }
-
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">data class ExampleResponse(
+    val id: Long,
+    val age: Int?,
+    val name: String
+) : EazyResponse()</code></pre>
 </div>
 </div>
 </li>
@@ -915,69 +882,55 @@ project(":dao").name = "example-dao"</code></pre>
 <li>
 <p>Create a DB representation entity in the <code>dao</code> module which implements the <code>EazyEntity</code></p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.dao.model.ExampleEntity.java (see it on <a href="https://github.com/eazyportal/example/tree/master/dao/src/main/java/org/eazyportal/example/dao/model/ExampleEntity.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.dao.model.ExampleEntity.kt (see it on <a href="https://github.com/eazyportal/example/tree/master/dao/src/main/kotlin/org/eazyportal/example/dao/model/ExampleEntity.kt">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Entity
-public class ExampleEntity implements EazyEntity {
-
+class ExampleEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true, updatable = false)
-    private long id;
-
+    var id: Long? = null,
     @Column
-    @Nullable
-    private Integer age;
-
+    @field:Nullable
+    var age: Int? = null,
     @Column(nullable = false)
-    private String name;
-
-    // Getters
-
-    public static class Builder implements EazyEntity.Builder {
-
-        // Builder
-
-    }
-
-}</code></pre>
+    var name: String
+) : EazyEntity()</code></pre>
 </div>
 </div>
 </li>
 <li>
 <p>Create a Spring-Data <code>@Repository</code> to establish the connection with the DB</p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.dao.repository.ExampleRepository.java (see it on <a href="https://github.com/eazyportal/example/tree/master/dao/src/main/java/org/eazyportal/example/dao/repository/ExampleRepository.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.dao.repository.ExampleRepository.kt (see it on <a href="https://github.com/eazyportal/example/tree/master/dao/src/main/kotlin/org/eazyportal/example/dao/repository/ExampleRepository.kt">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Repository
-public interface ExampleRepository extends CrudRepository&lt;ExampleEntity, Long&gt; {
-
-}</code></pre>
+interface ExampleRepository : CrudRepository&lt;ExampleEntity, Long&gt;</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Create a DAO class with <code>create</code> and <code>getById</code> methods, and annotate it with <code>@EazyDao</code> (see it on <a href="https://github.com/eazyportal/example/tree/master/dao/src/main/java/org/eazyportal/example/dao/ExampleDao.java">GitHub</a>)</p>
+<p>Create a DAO class with <code>create</code> and <code>getById</code> methods, and annotate it with <code>@EazyDao</code> (see it on <a href="https://github.com/eazyportal/example/tree/master/dao/src/main/kotlin/org/eazyportal/example/dao/ExampleDao.kt">GitHub</a>)</p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.dao.ExampleDao.java</div>
+<div class="title">org.eazyportal.example.dao.ExampleDao.kt</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@EazyDao
-public class ExampleDao {
+<pre class="highlight"><code class="language-java" data-lang="java">@Component
+@Transactional
+class ExampleDao : EazyDao&lt;ExampleEntity?&gt; {
 
     @Autowired
-    private ExampleRepository exampleRepository;
+    private lateinit var exampleRepository: ExampleRepository
 
-    public ExampleEntity create(ExampleEntity entity) {
-        return exampleRepository.save(entity);
+    fun create(entity: ExampleEntity): ExampleEntity {
+        return exampleRepository.save(entity)
     }
 
-    public Stream&lt;ExampleEntity&gt; getAll() {
-        return StreamSupport.stream(exampleRepository.findAll().spliterator(), false);
-    }
+    fun getAll(): Stream&lt;ExampleEntity&gt; =
+        StreamSupport.stream(exampleRepository.findAll().spliterator(), false)
 
-    public ExampleEntity getById(long id) {
+    fun getById(id: Long): ExampleEntity {
         return exampleRepository.findById(id)
-                .orElseThrow(() -&gt; new EntityNotFoundException("Example entity does not found with id:" + id));
+            .orElseThrow { EntityNotFoundException("Example entity does not found with id:$id") }
     }
 
 }</code></pre>
@@ -1007,18 +960,17 @@ project(":service").name = "example-service"</code></pre>
 <li>
 <p>Create a mapper class wich implements <code>EazyEntityMapper</code></p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.service.mapper.ExampleMapper.java (see it on <a href="https://github.com/eazyportal/example/tree/master/service/src/main/java/org/eazyportal/example/service/mapper/ExampleMapper.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.service.mapper.ExampleMapper.kt (see it on <a href="https://github.com/eazyportal/example/tree/master/service/src/main/kotlin/org/eazyportal/example/service/mapper/ExampleMapper.kt">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Component
-public class ExampleEntityMapper implements EazyEntityMapper&lt;ExampleEntity, ExampleResponse&gt; {
+class ExampleEntityMapper : EazyEntityMapper&lt;ExampleEntity, ExampleResponse&gt; {
 
-    @Override
-    public ExampleResponse map(ExampleEntity entity) {
-        return exampleResponseBuilder()
-            .withAge(entity.getAge())
-            .withName(entity.getName())
-            .build();
-    }
+    override fun map(entity: ExampleEntity): ExampleResponse =
+        ExampleResponse(
+            id = entity.id!!,
+            age = entity.age,
+            name = entity.name
+        )
 
 }</code></pre>
 </div>
@@ -1027,32 +979,33 @@ public class ExampleEntityMapper implements EazyEntityMapper&lt;ExampleEntity, E
 <li>
 <p>Create a service class</p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.service.ExampleService.java (see it on <a href="https://github.com/eazyportal/example/tree/master/service/src/main/java/org/eazyportal/example/service/ExampleService.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.service.ExampleService.kt (see it on <a href="https://github.com/eazyportal/example/tree/master/service/src/main/kotlin/org/eazyportal/example/service/ExampleService.kt">GitHub</a>)</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Component
-public class ExampleService {
+<pre class="highlight"><code class="language-java" data-lang="java">@Service
+class ExampleService {
 
     @Autowired
-    private ExampleDao exampleDao;
+    private lateinit var exampleDao: ExampleDao
+
     @Autowired
-    private ExampleEntiryMapper exampleEntiryMapper;
+    private lateinit var exampleEntityMapper: ExampleEntityMapper
 
-    public ExampleResponse create(CreateExampleRequest createExampleRequest) {
-        var exampleEntity = exampleEntityBuilder()
-            .build(exampleDao::create);
+    fun create(createExampleRequest: CreateExampleRequest): ExampleResponse =
+        ExampleEntity(
+            null,
+            createExampleRequest.age,
+            createExampleRequest.name
+        ).let { exampleDao.create(it) }
+            .let { exampleEntityMapper.map(it) }
 
-        return exampleEntiryMapper.map(exampleEntity);
-    }
-
-    public List&lt;ExampleResponse&gt; getAll() {
-        return exampleDao.getAll()
+    fun getAll(): List&lt;ExampleResponse&gt; =
+        exampleDao.getAll()
             .map(exampleEntityMapper::map)
-            .collect(Collectors.toList());
-    }
+            .collect(Collectors.toList())
 
-    public ExampleResponse getById(long id) {
-        return exampleEntiryMapper.map(exampleDao.getById(id));
-    }
+    fun getById(id: Long): ExampleResponse =
+        exampleDao.getById(id)
+            .let { exampleEntityMapper.map(it) }
 
 }</code></pre>
 </div>
@@ -1089,19 +1042,18 @@ project(":web").name = "example-web"</code></pre>
 <li>
 <p>Create a REST controller which implements the <code>EazyRestController</code> for creating new <code>Example</code>s</p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.web.rest.contoller.CreateExampleRestController.java (see it on <a href="https://github.com/eazyportal/example/tree/master/web/src/main/java/org/eazyportal/example/web/rest/controller/CreateExampleRestController.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.web.rest.contoller.CreateExampleRestController.kt (see it on <a href="https://github.com/eazyportal/example/tree/master/web/src/main/kotlin/org/eazyportal/example/web/rest/controller/CreateExampleRestController.kt">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@RestController
-@RequestMapping("/api/example")
-public class CreateExampleRestController implements EazyRestController {
+@RequestMapping("/api/examples")
+class CreateExampleRestController : EazyRestController {
 
     @Autowired
-    private ExampleService exampleService;
+    private lateinit var exampleService: ExampleService
 
     @PostMapping
-    public ExampleResponse create(@RequestBody CreateExampleRequest createExampleRequest) {
-        return exampleService.create(createExampleRequest);
-    }
+    fun create(@RequestBody createExampleRequest: CreateExampleRequest): ExampleResponse =
+        exampleService.create(createExampleRequest)
 
 }</code></pre>
 </div>
@@ -1110,24 +1062,22 @@ public class CreateExampleRestController implements EazyRestController {
 <li>
 <p>Create a REST controller which implements the <code>EazyRestController</code> for getting <code>Example</code>s</p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.web.rest.contoller.GetExampleRestController.java (see it on <a href="https://github.com/eazyportal/example/tree/master/web/src/main/java/org/eazyportal/example/web/rest/controller/GetExampleRestController.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.web.rest.contoller.GetExampleRestController.kt (see it on <a href="https://github.com/eazyportal/example/tree/master/web/src/main/kotlin/org/eazyportal/example/web/rest/controller/GetExampleRestController.kt">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@RestController
-@RequestMapping("/api/example")
-public class GetExampleRestController implements EazyRestController {
+@RequestMapping("/api/examples")
+class GetExampleRestController : EazyRestController {
 
     @Autowired
-    private ExampleService exampleService;
+    private lateinit var exampleService: ExampleService
 
     @GetMapping
-    public List&lt;ExampleResponse&gt; getAll() {
-        return exampleService.getAll();
-    }
+    fun getAll(): List&lt;ExampleResponse&gt; =
+        exampleService.getAll()
 
     @GetMapping("/{id}")
-    public ExampleResponse getById(@PathVariable long id) {
-        return exampleService.getById(id);
-    }
+    fun getById(@PathVariable id: Long): ExampleResponse =
+        exampleService.getById(id)
 
 }</code></pre>
 </div>
@@ -1137,29 +1087,19 @@ public class GetExampleRestController implements EazyRestController {
 <p><strong>Optionally</strong>, if you want to enable public access to any endpoint, you have to configure it.
 Create a security configurer which implements the <code>EazyWebSecurityConfigurer</code>.</p>
 <div class="listingblock">
-<div class="title">org.eazyportal.example.web.security.config.ExampleWebSecurityConfigurer.java (see it on <a href="https://github.com/eazyportal/example/tree/master/web/src/main/java/org/eazyportal/example/web/security/config/ExampleWebSecurityConfigurer.java">GitHub</a>)</div>
+<div class="title">org.eazyportal.example.web.security.config.ExampleWebSecurityConfigurer.kt (see it on <a href="https://github.com/eazyportal/example/tree/master/web/src/main/kotlin/org/eazyportal/example/web/security/config/ExampleWebSecurityConfigurer.kt">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Component
-public class ExampleWebSecurityConfigurer implements EazyWebSecurityConfigurer {
+class ExampleWebSecurityConfigurer : EazyWebSecurityConfigurer {
 
-    @Override
-    public void configure(ExpressionUrlAuthorizationConfigurer&lt;HttpSecurity&gt;.ExpressionInterceptUrlRegistry authorizeRequests) {
+    override fun configure(
+        authorizeRequests: ExpressionUrlAuthorizationConfigurer&lt;HttpSecurity&gt;.ExpressionInterceptUrlRegistry
+    ) {
         authorizeRequests
-                .antMatchers(HttpMethod.GET, "/api/examples/**").permitAll();
+            .antMatchers("/api/examples/**").permitAll()
     }
 
 }</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p><strong>Optionally</strong>, if you want to enable swagger, you can configure it</p>
-<div class="listingblock">
-<div class="title">application.yaml</div>
-<div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">springdoc:
-  swagger-ui:
-    enabled: true</code></pre>
 </div>
 </div>
 </li>
@@ -1240,7 +1180,7 @@ project(":ui").name = "example-ui"</code></pre>
 <li>
 <p>Configure the npm repository by creating the <code>.npmrc</code> file and add a new repository for the <code>@eazyportal</code> dependencies</p>
 <div class="listingblock">
-<div class="title">.npmrc</div>
+<div class="title">.npmrc (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/.npmrc">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-properties" data-lang="properties">always-auth=true
 registry=https://registry.npmjs.org/
@@ -1250,11 +1190,11 @@ registry=https://registry.npmjs.org/
 </li>
 </ul>
 </div>
-<h6 id="_initialize_the_main_project" class="discrete">Initialize the main project</h6>
+<h6 id="_initialize_the_main_workspace" class="discrete">Initialize the main workspace</h6>
 <div class="ulist">
 <ul>
 <li>
-<p>Add content to the <code>package.json</code> of the library</p>
+<p>Add configuration to <code>package.json</code> (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/package.json">GitHub</a>)</p>
 <details>
 <summary class="title">package.json</summary>
 <div class="content">
@@ -1263,7 +1203,7 @@ registry=https://registry.npmjs.org/
 <pre class="highlight"><code class="language-json" data-lang="json">{
   "name": "@eazyportal/example-ui",
   "version": "0.0.1-SNAPSHOT",
-  "description": "eazyPortal - Example-UI Library",
+  "description": "eazyPortal - Example-UI",
   "private": true,
   "scripts": {
     "clean": "yarn --cwd ./lib/ clean &amp; yarn --cwd ./app/ clean",
@@ -1286,9 +1226,9 @@ registry=https://registry.npmjs.org/
 <div class="ulist">
 <ul>
 <li>
-<p>Add content to the <code>package.json</code> of the library</p>
+<p>Add configuration to <code>lib/package.json</code> (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/lib/package.json">GitHub</a>)</p>
 <details>
-<summary class="title">package.json</summary>
+<summary class="title">lib/package.json</summary>
 <div class="content">
 <div class="listingblock">
 <div class="content">
@@ -1296,6 +1236,7 @@ registry=https://registry.npmjs.org/
   "name": "@eazyportal/example-ui-lib",
   "version": "0.0.1-SNAPSHOT",
   "description": "eazyPortal - Example-UI Library",
+  "author": "EazyPortal",
   "license": "https://github.com/eazyportal/core/blob/master/LICENSE",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -1344,9 +1285,9 @@ registry=https://registry.npmjs.org/
 <div class="ulist">
 <ul>
 <li>
-<p>Add content to the <code>package.json</code> of the application</p>
+<p>Add configuration to <code>app/package.json</code> (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/app/package.json">GitHub</a>)</p>
 <details>
-<summary class="title">example/package.json</summary>
+<summary class="title">app/package.json</summary>
 <div class="content">
 <div class="listingblock">
 <div class="content">
@@ -1413,7 +1354,7 @@ Nevertheless, it is a good step to validate if everything is working as expected
 <li>
 <p>Create a component to display one example entity from the backend</p>
 <div class="listingblock">
-<div class="title">src/components/ExampleComponent.jsx</div>
+<div class="title">lib/src/components/ExampleComponent.jsx (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/lib/src/components/ExampleComponent.jsx">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-js" data-lang="js">import React from 'react'
 
@@ -1427,7 +1368,7 @@ export default ExampleComponent</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">src/components/ExampleComponent.module.css</div>
+<div class="title">lib/src/components/ExampleComponent.module.css (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/lib/src/components/ExampleComponent.module.css">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-js" data-lang="js">.test {
   margin: 2em;
@@ -1442,7 +1383,7 @@ export default ExampleComponent</code></pre>
 <li>
 <p>The backend returns with multiple example entities, so create a wrapper for them <code>ExampleListComponent</code></p>
 <div class="listingblock">
-<div class="title">src/components/ExampleListComponent.js</div>
+<div class="title">lib/src/components/ExampleListComponent.jsx (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/lib/src/components/ExampleListComponent.jsx">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-js" data-lang="js">import { axiosService } from '@eazyportal/core-ui-lib'
 
@@ -1493,7 +1434,7 @@ export default ExampleListComponent</code></pre>
 <li>
 <p>Create the main entry point of the library</p>
 <div class="listingblock">
-<div class="title">src/App.jsx</div>
+<div class="title">lib/src/App.jsx (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/lib/src/App.jsx">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-js" data-lang="js">import React from 'react'
 
@@ -1543,7 +1484,7 @@ export default App</code></pre>
 <li>
 <p>Add some styling to the <code>App</code> component</p>
 <div class="listingblock">
-<div class="title">src/App.module.css</div>
+<div class="title">lib/src/App.module.css (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/lib/src/App.module.css">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-css" data-lang="css">.loadDataButton {
   transform: translateX(-50%);
@@ -1560,7 +1501,7 @@ export default App</code></pre>
 <li>
 <p>Export this <code>App</code> through the <code>Example</code> component</p>
 <div class="listingblock">
-<div class="title">index.jsx</div>
+<div class="title">lib/index.jsx (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/lib/index.jsx">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-js" data-lang="js">import App from './App'
 
@@ -1580,7 +1521,7 @@ export default Example</code></pre>
 <li>
 <p>Use the <code>App</code> from the library in the <code>index.jsx</code> to render it</p>
 <div class="listingblock">
-<div class="title">example/src/index.jsx</div>
+<div class="title">app/src/index.jsx (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/app/src/index.jsx">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-js" data-lang="js">import Example from '@eazyportal/example-ui-lib'
 
@@ -1598,7 +1539,7 @@ ReactDOM.createRoot(document.getElementById('example-root'))
 <li>
 <p>Update the <code>index.html</code> for React to render the component</p>
 <div class="listingblock">
-<div class="title">example/public/index.html</div>
+<div class="title">app/public/index.html (see it on <a href="https://github.com/eazyportal/example-ui/tree/master/app/public/index.html">GitHub</a>)</div>
 <div class="content">
 <pre class="highlight"><code class="language-html" data-lang="html">Unresolved directive in getting-started/create-a-custom-service/create-manually/ui/implement-the-ui-module.adoc - include::__resources/app/public/index.html[]</code></pre>
 </div>
